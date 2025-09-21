@@ -1,39 +1,22 @@
-import { useState, useEffect } from "react";
-import apiClient from "../services/api-client";
+import useData from "./useData";
 
-//we export it to use it in useGames and GameCard
+export interface Platform {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 export interface Game {
   id: number;
   name: string;
   background_image: string;
   metacritic: number;
-}
-
-interface GameResponse {
-  count: number;
-  results: Game[];
+  parent_platforms: { platform: Platform }[];
 }
 
 const useGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    console.log("Fetching games (useGames hook)...");
-    apiClient
-      .get<GameResponse>("/games")
-      .then((res) => {
-        console.log("API response (useGames hook):", res);
-        setGames(res.data.results);
-        console.log("Games set (useGames hook):", res.data.results);
-      })
-      .catch((err) => {
-        setError(err.message);
-        console.log("API error (useGames hook):", err);
-      });
-  }, []);
-
-  return { games, error };
+  const { data, error, isLoading } = useData<Game>("/games");
+  return { games: data, error, isLoading };
 };
 
 export default useGames;
