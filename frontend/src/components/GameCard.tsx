@@ -1,5 +1,4 @@
 import { Card, CardBody, Image, Heading } from "@chakra-ui/react";
-import React from "react";
 import type { Game } from "../hooks/useGames";
 
 interface Props {
