@@ -6,6 +6,7 @@ interface Prop {
 
 const CriticScore = ({ score }: Prop) => {
   const color = score > 75 ? "green" : score > 50 ? "yellow" : "red";
+  if (!score) return null;
 
   return (
     <Badge border="1px solid" fontSize={14} colorScheme={color}>
