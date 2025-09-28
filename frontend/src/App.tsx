@@ -6,14 +6,14 @@ import "./App.css";
 import { GameGrid } from "./components/GameGrid";
 import { NavBar } from "./components/NavBar";
 import PlatformSelector from "./components/PlatformSelector";
-import type { Game, Platform } from "./hooks/useGames";
+import type { Platform } from "./hooks/useGames";
 import type { Genre } from "./hooks/useGenres";
 import type { Store } from "./hooks/useStores";
 import CustomList from "./components/reusableComponents/CustomList";
 import useGenres from "./hooks/useGenres";
 import useStores from "./hooks/useStores";
 
-interface GameQuery {
+export interface GameQuery {
   genre: Genre | null;
   platform: Platform | null;
   store: Store | null;

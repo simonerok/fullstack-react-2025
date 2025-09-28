@@ -14,9 +14,9 @@ const StoreList = ({ onSelectStore, selectedStore }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const COLLAPSED_STORE_COUNT = 5;
 
-  const { stores, error, isLoading } = useStores();
+  const { data, error, isLoading } = useStores();
 
-  const displayedStores = isExpanded ? stores : stores.slice(0, COLLAPSED_STORE_COUNT);
+  const displayedStores = isExpanded ? data : data.slice(0, COLLAPSED_STORE_COUNT);
 
   if (error) return null;
 
@@ -30,7 +30,7 @@ const StoreList = ({ onSelectStore, selectedStore }: Props) => {
         </Heading>
       </Button>
       <List>
-        {displayedStores.map((store) => (
+        {displayedStores.map((store: Store) => (
           <ListItem key={store.id} padding="5px">
             <HStack>
               <Image src={getCroppedImageUrl(store.image_background)} boxSize="32px" borderRadius={8} objectFit="cover" />
