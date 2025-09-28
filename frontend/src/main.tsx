@@ -10,7 +10,7 @@ import theme from "./theme";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <ColorModeScript initialColorMode={theme["config"].initialColorMode} />
       <App />
     </ChakraProvider>
   </StrictMode>
