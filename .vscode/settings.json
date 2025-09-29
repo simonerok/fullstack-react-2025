@@ -1,0 +1,6 @@
+// These settings are for Python development in VS Code.
+// If your project is only React, you can remove them but because i have a backend in MySql and Node.js i need it.
+{
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": []
+}

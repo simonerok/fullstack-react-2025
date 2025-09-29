@@ -5,7 +5,7 @@ export const NavBar = () => {
   return (
     <HStack p={4} justifyContent={"space-between"}>
       <Image src={logo} boxSize="60px" />
-      <Text>NavBar</Text>
+      <Text></Text>
       <Spacer />
       {/* Spacer makes it possible to push the switch */}
       <ColorModeSwitch /> {/* handles dark mode */}
