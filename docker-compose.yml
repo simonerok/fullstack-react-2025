@@ -1,24 +1,60 @@
-# created this docker compose file for help with server confusion when stating the mysql server.
-version: "3.9"
-
+# run without the seeder
+# docker-compose up --scale seeder=0
 services:
-  mysql:
-    image: mysql:8.4
-    container_name: rawg-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: "123456"
-      MYSQL_DATABASE: "rawgDatabase"
-    ports:
-      - "3307:3306" # host:container
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     volumes:
-      - mysql_rawg_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -p$MYSQL_ROOT_PASSWORD || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 20s
+      - ./backend:/app
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: mysql://root:rootpassword@mysql:3306/rawgDatabase
+      DB_TYPE: mysql
+    depends_on:
+      - mysql
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Prevents overwriting node_modules on the container
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:5000
+      CHOKIDAR_USEPOLLING: true # For file watching in Docker on some systems
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: rawgDatabase
+      DB_TYPE: mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data_rawg:/var/lib/mysql
+
+  seeder:
+    container_name: seeder
+    build:
+      context: ./seeder
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_URL: mysql://root:rootpassword@mysql:3306/rawgDatabase
+    volumes:
+      - ./seeder:/app
 
 volumes:
-  mysql_rawg_data:
+  mysql-data_rawg:
+# if there are problems, remove it:
+# docker volume rm rawg-fullstack-2025-fall_mysql-data_rawg

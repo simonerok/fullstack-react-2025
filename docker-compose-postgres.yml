@@ -1,0 +1,97 @@
+# run without the seeder
+
+# docker-compose up --scale seeder=0
+
+services:
+  backend:
+    container_name: backend
+
+    build:
+      context: ./backend
+
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./backend:/app
+      - /app/node_modules # Prevents overwriting node_modules installed in the image
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      DATABASE_URL: postgres://root:rootpassword@postgres:5432/rawgDatabase
+      DB_TYPE: postgres
+
+    depends_on:
+      - postgres
+
+  frontend:
+    container_name: frontend
+
+    build:
+      context: ./frontend
+
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Prevents overwriting node_modules on the container
+
+    ports:
+      - "5173:5173"
+
+    environment:
+      # For local development (browser on host), point to backend via localhost
+      VITE_API_URL: http://localhost:5000
+      CHOKIDAR_USEPOLLING: true # For file watching in Docker on some systems
+
+  seeder:
+    container_name: seeder
+
+    build:
+      context: ./seeder
+
+      dockerfile: Dockerfile
+
+    depends_on:
+      - postgres
+
+    environment:
+      DATABASE_URL: postgres://root:rootpassword@postgres:5432/rawgDatabase
+      DB_TYPE: postgres
+
+    volumes:
+      - ./seeder:/app
+      - /app/node_modules # Prevents overwriting node_modules installed in the image
+
+  postgres:
+    image: postgres:latest
+
+    container_name: postgres
+
+    environment:
+      POSTGRES_USER: root
+
+      POSTGRES_PASSWORD: rootpassword
+
+      POSTGRES_DB: rawgDatabase
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      # New PostgreSQL images (18+) use a versioned data layout. Mount the volume
+      # at /var/lib/postgresql so the image can manage per-version subdirectories.
+      - postgres-data_rawg:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d rawgDatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  postgres-data_rawg:
+# if there are problems, remove it:
+
+# docker volume rm rawg-fullstack-2025-fall_postgres-data_rawg
