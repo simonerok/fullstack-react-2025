@@ -9,7 +9,14 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env["VITE_API_URL"],
 });
 
-class ApiClient<T> {
+export interface Response<T> {
+  count: number;
+  results: T[];
+}
+
+export const axiosClient = axiosInstance;
+
+export class ApiClient<T> {
   endpoint: string;
 
   constructor(endpoint: string) {

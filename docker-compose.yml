@@ -37,6 +37,8 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: rawgDatabase
       DB_TYPE: mysql
+      SERVER_URL: http://localhost:5000
+
     ports:
       - "3307:3306"
     volumes:

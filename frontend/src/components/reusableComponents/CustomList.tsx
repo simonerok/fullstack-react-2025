@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, HStack, Heading, Image, List, ListItem, Spinner } from "@chakra-ui/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import type { Response } from "../../services/api-client.ts-2";
+import type { Response } from "../../services/api-client";
 import getCroppedImageUrl from "../../services/image-url";
 
 interface Item {
@@ -41,7 +41,7 @@ const CustomList = <T extends Item>({ onSelectItem, selectedItem, title, useData
         </Heading>
       </Button>
       <List>
-        {displayedItems?.map((item) => (
+        {displayedItems?.map((item: T) => (
           <ListItem key={item.id} padding="5px">
             <HStack>
               <Image src={getCroppedImageUrl(item.image_background)} boxSize="32px" borderRadius={8} objectFit="cover" />
