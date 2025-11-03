@@ -16,7 +16,8 @@ const StoreList = ({ onSelectStore, selectedStore }: Props) => {
 
   const { data, error, isLoading } = useStores();
 
-  const displayedStores = isExpanded ? data : data.slice(0, COLLAPSED_STORE_COUNT);
+  const storesArray = data?.results ?? [];
+  const displayedStores = isExpanded ? storesArray : storesArray.slice(0, COLLAPSED_STORE_COUNT);
 
   if (error) return null;
 

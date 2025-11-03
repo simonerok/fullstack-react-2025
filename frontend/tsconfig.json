@@ -3,6 +3,7 @@
     "sourceMap": true, // Generate corresponding '.map' files for debugging
     "inlineSources": true, // Include the original source code in the source maps
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo", // Path for incremental build info
+    "incremental": true,
     "target": "ES2022", // Set the JavaScript language version for output files
     "useDefineForClassFields": true, // Use 'define' semantics for class fields
     "lib": ["ES2022", "DOM", "DOM.Iterable"], // Specify library files to include in the compilation
@@ -21,9 +22,8 @@
     "strict": true, // Enable all strict type-checking options
     "noUnusedLocals": true, // Report errors on unused local variables
     "noUnusedParameters": true, // Report errors on unused parameters
-    "erasableSyntaxOnly": true, // Only allow erasable syntax
     "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statements
-    "noUncheckedSideEffectImports": true, // Disallow imports with unchecked side effects
+
     "noImplicitReturns": true, // Report error when not all code paths in function return a value
     "noImplicitOverride": true, // Ensure that the 'override' modifier is used when overriding methods
     "noPropertyAccessFromIndexSignature": true, // Disallow property access from index signatures
