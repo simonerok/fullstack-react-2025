@@ -8,7 +8,7 @@ export default defineConfig({
     watch: {
       usePolling: true, // watching for file changes so that it is reloaded in docker container
     },
-    port: 3000,
+    port: 5173,
     host: "0.0.0.0",
   },
 });
