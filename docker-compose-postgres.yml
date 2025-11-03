@@ -77,7 +77,7 @@ services:
       POSTGRES_DB: rawgDatabase
 
     ports:
-      - "5432:5432"
+      - "3000:3000"
 
     volumes:
       # New PostgreSQL images (18+) use a versioned data layout. Mount the volume

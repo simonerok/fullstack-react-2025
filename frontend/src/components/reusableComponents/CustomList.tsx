@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, HStack, Heading, Image, List, ListItem, Spinner } from "@chakra-ui/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import type { Response } from "../../hooks/useData";
+import type { Response } from "../../services/api-client.ts-2";
 import getCroppedImageUrl from "../../services/image-url";
 
 interface Item {
