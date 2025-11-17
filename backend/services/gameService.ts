@@ -109,3 +109,28 @@ export const getGames = async (req: any) => {
     return { modifiedGames: [], total: 0 };
   }
 };
+
+export const getGame = async (gameId: string) => {
+  try {
+    const game = await gameRepository.findOne({
+      where: { id: Number(gameId) },
+      relations: ["genres", "stores", "parent_platforms"],
+    });
+    return {
+      ...game,
+      parent_platforms: game?.parent_platforms?.map((parent_platform) => ({
+        platform: parent_platform,
+      })),
+    };
+  } catch (error) {
+    throw new Error(`Game with ID ${gameId} not found.`);
+  }
+};
+
+export const deleteGameById = async (gameId: number) => {
+  try {
+    await gameRepository.delete(gameId);
+  } catch (error) {
+    throw new Error(`Failed to delete game with ID ${gameId}.`);
+  }
+};

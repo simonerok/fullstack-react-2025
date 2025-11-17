@@ -12,6 +12,7 @@ const axiosInstance = axios.create({
 export interface Response<T> {
   count: number;
   results: T[];
+  next: string | null;
 }
 
 export const axiosClient = axiosInstance;

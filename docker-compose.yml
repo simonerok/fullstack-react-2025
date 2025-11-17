@@ -44,17 +44,18 @@ services:
     volumes:
       - mysql-data_rawg:/var/lib/mysql
 
-  seeder:
+  seeder1:
     container_name: seeder
     build:
-      context: ./seeder
+      context: ./seeder1
       dockerfile: Dockerfile
     depends_on:
       - mysql
     environment:
       DATABASE_URL: mysql://root:rootpassword@mysql:3306/rawgDatabase
     volumes:
-      - ./seeder:/app
+      - ./seeder1:/app
+      - /app/node_modules # Prevents overwriting node_modules on the container
 
 volumes:
   mysql-data_rawg:

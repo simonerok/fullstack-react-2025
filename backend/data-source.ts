@@ -17,4 +17,7 @@ export const AppDataSource = new DataSource({
   entities: [Game, Genre, ParentPlatform, Store],
   synchronize: true,
   logging: true,
+  // Disable SSL for local Docker Postgres. Enable only in production where the
+  // database server supports SSL (or when using a managed DB that requires it).
+  ssl: false,
 });

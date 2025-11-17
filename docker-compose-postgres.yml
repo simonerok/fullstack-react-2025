@@ -1,5 +1,5 @@
 # run without the seeder
-
+# docker compose -f docker-compose-postgres.yml up -d --build
 # docker-compose up --scale seeder=0
 
 services:
@@ -46,11 +46,12 @@ services:
       VITE_API_URL: http://localhost:5000
       CHOKIDAR_USEPOLLING: true # For file watching in Docker on some systems
 
-  seeder:
-    container_name: seeder
+  seeder1:
+    container_name: seeder1
 
+    # Project seeder directory was renamed to `seeder1` — point the build/context there
     build:
-      context: ./seeder
+      context: ./seeder1
 
       dockerfile: Dockerfile
 
@@ -60,9 +61,10 @@ services:
     environment:
       DATABASE_URL: postgres://root:rootpassword@postgres:5432/rawgDatabase
       DB_TYPE: postgres
+      SERVER_URL: http://localhost:5000
 
     volumes:
-      - ./seeder:/app
+      - ./seeder1:/app
       - /app/node_modules # Prevents overwriting node_modules installed in the image
 
   postgres:

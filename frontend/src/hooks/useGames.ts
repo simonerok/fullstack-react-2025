@@ -1,38 +1,37 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-import type { GameQuery } from "../App";
-import ApiClient, { type Response } from "../services/api-client";
+import { type Response } from "../services/api-client";
+import type { Game } from "../services/gameService";
+import gameService from "../services/gameService";
+import useGameQueryStore from "../store";
 
-export interface Platform {
-  id: number;
-  name: string;
-  slug: string;
-}
+const useGames = () => {
+  const gameQuery = useGameQueryStore((s) => s.gameQuery);
 
-export interface Game {
-  id: number;
-  name: string;
-  background_image: string;
-  metacritic: number;
-  parent_platforms: { platform: Platform }[];
-}
-
-const apiClient = new ApiClient<Game>("/games");
-
-const useGames = (gameQuery: GameQuery) => {
-  const axiosConfig = {
-    params: {
-      genres: gameQuery.genre?.id,
-      platforms: gameQuery.platform?.id,
-      stores: gameQuery.store?.id,
-      ordering: gameQuery.sortOrder,
-      search: gameQuery.searchText,
-    },
+  const simpleGameQuery = {
+    ...gameQuery,
+    genre: gameQuery.genre?.id,
+    platform: gameQuery.platform?.id,
+    store: gameQuery.store?.id,
   };
 
-  return useQuery<Response<Game>, Error>({
-    queryKey: ["games", gameQuery],
-    queryFn: () => apiClient.getAll(axiosConfig),
+  return useInfiniteQuery<Response<Game>, Error>({
+    queryKey: ["games", simpleGameQuery],
+    queryFn: ({ pageParam = 1 }) =>
+      gameService.getAll({
+        params: {
+          genres: gameQuery.genre?.id,
+          platforms: gameQuery.platform?.id,
+          stores: gameQuery.store?.id,
+          ordering: gameQuery.sortOrder,
+          search: gameQuery.searchText,
+          page: pageParam,
+          page_size: gameQuery.pageSize,
+        },
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
   });
 };
 
